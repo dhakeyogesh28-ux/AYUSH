@@ -1,0 +1,48 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.code-workspace
+Untitled*
+
+# Environment Secrets
+.env
+*.env
+backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+backend/__pycache__/
+
+# Temporary & large files exceeding GitHub 100MB file size limit
+temp_extract/
+*.obj
+*.mtl
+*.glb
+public/doctor.glb
+public/metallic_2.png
+public/roughness_1.png
+public/diffuse_0.jpg
+

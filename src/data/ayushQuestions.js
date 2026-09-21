@@ -1,0 +1,697 @@
+/**
+ * Dashavidha Pariksha — 10-fold Ayurvedic Clinical Examination Framework
+ * Classical Ayurvedic assessment translated into 8 Indian languages:
+ * English, Hindi, Marathi, Tamil, Telugu, Kannada, Bengali, Gujarati.
+ */
+
+export const DASHAVIDHA_SECTIONS_BY_LANG = {
+  en: [
+    { id: 'prakriti', label: 'Prakriti', subtitle: 'Body Constitution', icon: '🌿' },
+    { id: 'vikriti', label: 'Vikriti', subtitle: 'Current Imbalance', icon: '⚖️' },
+    { id: 'sara', label: 'Sara', subtitle: 'Tissue Excellence', icon: '✨' },
+    { id: 'samhanana', label: 'Samhanana', subtitle: 'Body Compactness', icon: '💪' },
+    { id: 'satmya', label: 'Satmya', subtitle: 'Dietary Adaptability', icon: '🌸' },
+    { id: 'sattva', label: 'Sattva', subtitle: 'Mental Strength', icon: '🧠' },
+    { id: 'ahara_shakti', label: 'Ahara Shakti', subtitle: 'Agni & Digestion', icon: '🍽️' },
+    { id: 'vyayama_shakti', label: 'Vyayama Shakti', subtitle: 'Physical Stamina', icon: '🏃' },
+    { id: 'vaya', label: 'Vaya', subtitle: 'Vitality & Age', icon: '🌱' },
+  ],
+  hi: [
+    { id: 'prakriti', label: 'प्रकृति', subtitle: 'शारीरिक संरचना (वात-पित्त-कफ)', icon: '🌿' },
+    { id: 'vikriti', label: 'विकृति', subtitle: 'वर्तमान दोष असंतुलन', icon: '⚖️' },
+    { id: 'sara', label: 'सार', subtitle: 'धातु एवं शारीरिक गुणवत्ता', icon: '✨' },
+    { id: 'samhanana', label: 'संहनन', subtitle: 'शारीरिक मजबूती व कसावट', icon: '💪' },
+    { id: 'satmya', label: 'सात्म्य', subtitle: 'आहार अनुकूलता', icon: '🌸' },
+    { id: 'sattva', label: 'सत्त्व', subtitle: 'मानसिक मनोबल व धैर्य', icon: '🧠' },
+    { id: 'ahara_shakti', label: 'आहार शक्ति', subtitle: 'अग्नि एवं पाचन क्षमता', icon: '🍽️' },
+    { id: 'vyayama_shakti', label: 'व्यायाम शक्ति', subtitle: 'शारीरिक सहनशक्ति व बल', icon: '🏃' },
+    { id: 'vaya', label: 'वय', subtitle: 'ऊर्जा व जीवन शक्ति', icon: '🌱' },
+  ],
+  mr: [
+    { id: 'prakriti', label: 'प्रकृती', subtitle: 'शारीरिक ठेवण (वात-पित्त-कफ)', icon: '🌿' },
+    { id: 'vikriti', label: 'विकृती', subtitle: 'सध्याचा दोष असंतुलन', icon: '⚖️' },
+    { id: 'sara', label: 'सार', subtitle: 'धातू व शरीर गुणवत्ता', icon: '✨' },
+    { id: 'samhanana', label: 'संहनन', subtitle: 'शारीरिक बळकटी', icon: '💪' },
+    { id: 'satmya', label: 'सात्म्य', subtitle: 'आहार पचन क्षमता', icon: '🌸' },
+    { id: 'sattva', label: 'सत्त्व', subtitle: 'मानसिक ताकद व धैर्य', icon: '🧠' },
+    { id: 'ahara_shakti', label: 'आहार शक्ती', subtitle: 'अग्नी व पचनशक्ती', icon: '🍽️' },
+    { id: 'vyayama_shakti', label: 'व्यायाम शक्ती', subtitle: 'शारीरिक ताकद व उत्साह', icon: '🏃' },
+    { id: 'vaya', label: 'वय', subtitle: 'ऊर्जा व चैतन्य', icon: '🌱' },
+  ],
+  ta: [
+    { id: 'prakriti', label: 'பிரகிருதி', subtitle: 'உடல் அமைப்பு (வாதம்-பித்தம்-கபம்)', icon: '🌿' },
+    { id: 'vikriti', label: 'விக்ருதி', subtitle: 'தற்போதைய தோஷ ஏற்றத்தாழ்வு', icon: '⚖️' },
+    { id: 'sara', label: 'சாரம்', subtitle: 'திசு தரம்', icon: '✨' },
+    { id: 'samhanana', label: 'சம்ஹனனம்', subtitle: 'உடல் வலிமை', icon: '💪' },
+    { id: 'satmya', label: 'சாத்மியம்', subtitle: 'உணவு ஏற்புத்திறன்', icon: '🌸' },
+    { id: 'sattva', label: 'சத்துவம்', subtitle: 'மன உறுதி', icon: '🧠' },
+    { id: 'ahara_shakti', label: 'ஆகார சக்தி', subtitle: 'அக்னி மற்றும் செரிமானம்', icon: '🍽️' },
+    { id: 'vyayama_shakti', label: 'வியாயாம சக்தி', subtitle: 'உடற்பயிற்சி திறன்', icon: '🏃' },
+    { id: 'vaya', label: 'வயது', subtitle: 'உடல் ஆற்றல்', icon: '🌱' },
+  ],
+  te: [
+    { id: 'prakriti', label: 'ప్రకృతి', subtitle: 'శరీర స్వభావం (వాత-పిత్త-కఫ)', icon: '🌿' },
+    { id: 'vikriti', label: 'వికృతి', subtitle: 'ప్రస్తుత దోష అసమతుల్యత', icon: '⚖️' },
+    { id: 'sara', label: 'సారం', subtitle: 'ధాతువుల బలం', icon: '✨' },
+    { id: 'samhanana', label: 'సంహననం', subtitle: 'శరీర పటిష్టత', icon: '💪' },
+    { id: 'satmya', label: 'సాత్మ్యం', subtitle: 'ఆహార అనుకూలత', icon: '🌸' },
+    { id: 'sattva', label: 'సత్త్వం', subtitle: 'మానసిక దృఢత్వం', icon: '🧠' },
+    { id: 'ahara_shakti', label: 'ఆహార శక్తి', subtitle: 'జీర్ణశక్తి మరియు అగ్ని', icon: '🍽️' },
+    { id: 'vyayama_shakti', label: 'వ్యాయామ శక్తి', subtitle: 'శారీరక సామర్థ్యం', icon: '🏃' },
+    { id: 'vaya', label: 'వయస్సు', subtitle: 'శక్తి స్థాయి', icon: '🌱' },
+  ],
+  kn: [
+    { id: 'prakriti', label: 'ಪ್ರಕೃತಿ', subtitle: 'ದೇಹ ಪ್ರಕೃತಿ (ವಾತ-ಪಿತ್ತ-ಕಫ)', icon: '🌿' },
+    { id: 'vikriti', label: 'ವಿಕೃತಿ', subtitle: 'ಪ್ರಸ್ತುತ ದೋಷ ಅಸಮತೋಲನ', icon: '⚖️' },
+    { id: 'sara', label: 'ಸಾರ', subtitle: 'ಧಾತು ಸಾಮರ್ಥ್ಯ', icon: '✨' },
+    { id: 'samhanana', label: 'ಸಂಹನನ', subtitle: 'ದೇಹದ ದೃಢತೆ', icon: '💪' },
+    { id: 'satmya', label: 'ಸಾತ್ಮ್ಯ', subtitle: 'ಆಹಾರ ಹೊಂದಾಣಿಕೆ', icon: '🌸' },
+    { id: 'sattva', label: 'ಸತ್ತ್ವ', subtitle: 'ಮಾನಸಿಕ ಧೈರ್ಯ', icon: '🧠' },
+    { id: 'ahara_shakti', label: 'ಆಹಾರ ಶಕ್ತಿ', subtitle: 'ಜೀರ್ಣಶಕ್ತಿ ಮತ್ತು ಅಗ್ನಿ', icon: '🍽️' },
+    { id: 'vyayama_shakti', label: 'ವ್ಯಾಯಾಮ ಶಕ್ತಿ', subtitle: 'ದೈಹಿಕ ಸಾಮರ್ಥ್ಯ', icon: '🏃' },
+    { id: 'vaya', label: 'ವಯಸ್ಸು', subtitle: 'ಚೈತನ್ಯ ಮತ್ತು ಶಕ್ತಿ', icon: '🌱' },
+  ],
+  bn: [
+    { id: 'prakriti', label: 'প্রকৃতি', subtitle: 'শারীরিক গঠন (বাত-পিত্ত-কফ)', icon: '🌿' },
+    { id: 'vikriti', label: 'বিকৃতি', subtitle: 'বর্তমান দোষের ভারসাম্যহীনতা', icon: '⚖️' },
+    { id: 'sara', label: 'সার', subtitle: 'ধাতুর গুণমান', icon: '✨' },
+    { id: 'samhanana', label: 'সংহনন', subtitle: 'শারীরিক গঠন ও দৃঢ়তা', icon: '💪' },
+    { id: 'satmya', label: 'সাত্ম্য', subtitle: 'খাদ্যের সহনশীলতা', icon: '🌸' },
+    { id: 'sattva', label: 'সত্ত্ব', subtitle: 'মানসিক শক্তি ও ধৈর্য', icon: '🧠' },
+    { id: 'ahara_shakti', label: 'আহার শক্তি', subtitle: 'অগ্নি ও হজম ক্ষমতা', icon: '🍽️' },
+    { id: 'vyayama_shakti', label: 'ব্যায়াম শক্তি', subtitle: 'শারীরিক শক্তি ও সহনশীলতা', icon: '🏃' },
+    { id: 'vaya', label: 'বয়স', subtitle: 'জীবনশক্তি ও তারুণ্য', icon: '🌱' },
+  ],
+  gu: [
+    { id: 'prakriti', label: 'પ્રકૃતિ', subtitle: 'શારીરિક બંધારણ (વાત-પિત્ત-કફ)', icon: '🌿' },
+    { id: 'vikriti', label: 'વિકૃતિ', subtitle: 'હાલનું દોષ અસંતુલન', icon: '⚖️' },
+    { id: 'sara', label: 'સાર', subtitle: 'ધાતુ અને શારીરિક ગુણવત્તા', icon: '✨' },
+    { id: 'samhanana', label: 'સંહનન', subtitle: 'શારીરિક મજબૂતી', icon: '💪' },
+    { id: 'satmya', label: 'સાત્મ્ય', subtitle: 'ખોરાક અનુકૂળતા', icon: '🌸' },
+    { id: 'sattva', label: 'સત્ત્વ', subtitle: 'માનસિક મનોબળ', icon: '🧠' },
+    { id: 'ahara_shakti', label: 'આહાર શક્તિ', subtitle: 'અગ્નિ અને પાચન ક્ષમતા', icon: '🍽️' },
+    { id: 'vyayama_shakti', label: 'વ્યાયામ શક્તિ', subtitle: 'શારીરિક સહનશક્તિ', icon: '🏃' },
+    { id: 'vaya', label: 'વય', subtitle: 'ઊર્જા અને સ્ફૂર્તિ', icon: '🌱' },
+  ],
+};
+
+export const AYUSH_QUESTIONS_BY_LANG = {
+  hi: [
+    {
+      id: 'prakriti_body_type',
+      section: 'prakriti',
+      question: 'आपके शरीर की बनावट और वजन कैसा है?',
+      type: 'options',
+      options: [
+        'पतला शरीर, वजन बढ़ाना मुश्किल (वात प्रकृति)',
+        'मध्यम शरीर, सुडौल और संतुलित वजन (पित्त प्रकृति)',
+        'भारी शरीर, वजन आसानी से बढ़ता है (कफ प्रकृति)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'prakriti_skin',
+      section: 'prakriti',
+      question: 'आपकी त्वचा का प्रकार कैसा है?',
+      type: 'options',
+      options: [
+        'रूखी, सूखी और ठंडी त्वचा (वात)',
+        'तैलीय, गर्म, जल्दी लाल होने वाली त्वचा (पित्त)',
+        'मुलायम, चिकनी, मोटी त्वचा (कफ)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'vikriti_current',
+      section: 'vikriti',
+      question: 'वर्तमान में आपको कौन सी मुख्य आयुर्वेदिक तकलीफ महसूस हो रही है?',
+      type: 'multi',
+      options: [
+        'गैस, कब्ज, जोड़ों में दर्द, घबराहट (वात दोष)',
+        'एसिडिटी, पेट में जलन, गुस्सा, त्वचा पर दाने (पित्त दोष)',
+        'शरीर में भारीपन, बलगम, सुस्ती, सूजन (कफ दोष)',
+        'कोई विशेष तकलीफ नहीं',
+      ],
+      ayushKey: 'vikriti',
+    },
+    {
+      id: 'ahara_appetite',
+      section: 'ahara_shakti',
+      question: 'आपकी भूख और पाचन शक्ति (अग्नि) कैसी है?',
+      type: 'options',
+      options: [
+        'बहुत तेज भूख — समय पर न खाने से सिरदर्द/चिड़चिड़ापन (तीक्ष्णाग्नि)',
+        'नियमित और अच्छी भूख (समाग्नि)',
+        'अनियमित — कभी भूख लगती है, कभी नहीं (विषमाग्नि)',
+        'कम भूख — खाने के बाद भारीपन व आलस (मंदाग्नि)',
+      ],
+      ayushKey: 'ahara_shakti',
+    },
+    {
+      id: 'koshtha',
+      section: 'ahara_shakti',
+      question: 'पेट साफ होने की स्थिति (कोष्ठ) कैसी रहती है?',
+      type: 'options',
+      options: [
+        'प्रतिदिन नियमित एक बार सामान्य पेट साफ होता है (सम कोष्ठ)',
+        'बार-बार शौच या पतला मल आने की प्रवृत्ति (मृदु कोष्ठ)',
+        'कब्ज — कड़ा मल और कई-कई दिन साफ न होना (क्रूर कोष्ठ)',
+      ],
+      ayushKey: 'koshtha',
+    },
+    {
+      id: 'sattva_mental',
+      section: 'sattva',
+      question: 'तनाव या परेशानी में आपका मानसिक धैर्य कैसा रहता है?',
+      type: 'options',
+      options: [
+        'मजबूत — कठिन परिस्थिति में भी शांत और सकारात्मक (प्रवर सत्त्व)',
+        'मध्यम — थोड़ा प्रयास करके संभाल लेते हैं (मध्यम सत्त्व)',
+        'कमजोर — जल्दी घबरा जाते हैं या डर लगता है (अवर सत्त्व)',
+      ],
+      ayushKey: 'sattva',
+    },
+    {
+      id: 'vyayama_capacity',
+      section: 'vyayama_shakti',
+      question: 'आपकी शारीरिक मेहनत और व्यायाम करने की क्षमता कैसी है?',
+      type: 'options',
+      options: [
+        'बहुत अच्छी — भारी काम करने पर भी जल्दी थकान नहीं होती (प्रवर बल)',
+        'मध्यम — सामान्य काम आसानी से कर लेते हैं (मध्यम बल)',
+        'कम — थोड़ा चलने या काम करने पर तुरंत सांस फूलती/थकान होती है (अवर बल)',
+      ],
+      ayushKey: 'vyayama_shakti',
+    },
+  ],
+
+  mr: [
+    {
+      id: 'prakriti_body_type',
+      section: 'prakriti',
+      question: 'आपल्या शरीराची ठेवण आणि वजन कसे आहे?',
+      type: 'options',
+      options: [
+        'बारीक शरीर, वजन वाढणे कठीण (वात प्रकृती)',
+        'मध्यम शरीर, व्यवस्थित आणि संतुलित वजन (पित्त प्रकृती)',
+        'जाड/अवजड शरीर, वजन सहज वाढते (कफ प्रकृती)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'prakriti_skin',
+      section: 'prakriti',
+      question: 'आपली त्वचा कशी आहे?',
+      type: 'options',
+      options: [
+        'कोरडी, रखरखीत आणि थंड त्वचा (वात)',
+        'तेलकट, उबदार, लगेच लाल होणारी त्वचा (पित्त)',
+        'मऊ, गुळगुळीत आणि जाड त्वचा (कफ)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'vikriti_current',
+      section: 'vikriti',
+      question: 'सध्या आपल्याला कोणता मुख्य त्रास होत आहे?',
+      type: 'multi',
+      options: [
+        'गॅस, बद्धकोष्ठता, सांधेदुखी, चिंता (वात दोष)',
+        'अॅसिडिटी, पोटात जळजळ, संताप, अंगावर पुरळ (पित्त दोष)',
+        'शरीरात जडपणा, कफ, आळस, सूज (कफ दोष)',
+        'काही विशेष त्रास नाही',
+      ],
+      ayushKey: 'vikriti',
+    },
+    {
+      id: 'ahara_appetite',
+      section: 'ahara_shakti',
+      question: 'आपली भूक आणि पचनशक्ती (अग्नी) कशी आहे?',
+      type: 'options',
+      options: [
+        'खूप भूक लागते — वेळेवर जेवले नाही तर डोके दुखते (तीक्ष्णाग्नी)',
+        'नियमित आणि चांगली भूक (समाग्नी)',
+        'अनियमित — कधी भूक लागते, कधी लागत नाही (विषमाग्नी)',
+        'कमी भूक — जेवल्यावर पोट जड वाटते (मंदाग्नी)',
+      ],
+      ayushKey: 'ahara_shakti',
+    },
+    {
+      id: 'koshtha',
+      section: 'ahara_shakti',
+      question: 'पोट साफ होण्याची सवय (कोष्ठ) कशी आहे?',
+      type: 'options',
+      options: [
+        'दररोज नियमित एकदा व्यवस्थित पोट साफ होते (सम कोष्ठ)',
+        'वारंवार शौचास जावे लागते किंवा पातळ शौच (मृदू कोष्ठ)',
+        'बद्धकोष्ठता — कडक शौच आणि त्रास होतो (क्रूर कोष्ठ)',
+      ],
+      ayushKey: 'koshtha',
+    },
+    {
+      id: 'sattva_mental',
+      section: 'sattva',
+      question: 'तणावाच्या वेळी आपले मानसिक धैर्य कसे असते?',
+      type: 'options',
+      options: [
+        'खूप मजबूत — शांत राहून परिस्थिती हाताळता (प्रवर सत्त्व)',
+        'मध्यम — थोडे प्रयत्नाने सांभाळता (मध्यम सत्त्व)',
+        'लगेच भीती वाटते किंवा गोंधळून जाता (अवर सत्त्व)',
+      ],
+      ayushKey: 'sattva',
+    },
+    {
+      id: 'vyayama_capacity',
+      section: 'vyayama_shakti',
+      question: 'आपली शारीरिक मेहनत करण्याची क्षमता (बल) कशी आहे?',
+      type: 'options',
+      options: [
+        'उत्तम — जास्त काम करूनही लवकर थकवा येत नाही (प्रवर बल)',
+        'मध्यम — सामान्य कामे सहज करू शकता (मध्यम बल)',
+        'कमी — थोडे काम केल्यावरही लगेच दम लागतो व थकवा येतो (अवर बल)',
+      ],
+      ayushKey: 'vyayama_shakti',
+    },
+  ],
+
+  ta: [
+    {
+      id: 'prakriti_body_type',
+      section: 'prakriti',
+      question: 'உங்கள் உடல் அமைப்பு மற்றும் எடை எவ்வாறு உள்ளது?',
+      type: 'options',
+      options: [
+        'மெலிந்த உடல், எடை கூடுவது கடினம் (வாதம்)',
+        'நடுத்தர உடல், சீரான எடை (பித்தம்)',
+        'பருமன் உடல், எளிதில் எடை கூடுகிறது (கபம்)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'prakriti_skin',
+      section: 'prakriti',
+      question: 'உங்கள் தோல் தன்மை எவ்வாறு உள்ளது?',
+      type: 'options',
+      options: [
+        'வறண்ட, கடினமான தோல் (வாதம்)',
+        'எண்ணெய் பசை, சூடான, சிவக்கும் தோல் (பித்தம்)',
+        'மென்மையான, ஈரப்பதமுள்ள தோல் (கபம்)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'ahara_appetite',
+      section: 'ahara_shakti',
+      question: 'உங்கள் பசி மற்றும் செரிமான திறன் (அக்னி) எவ்வாறு உள்ளது?',
+      type: 'options',
+      options: [
+        'அதிக பசி — நேரத்திற்கு சாப்பிடாவிட்டால் தலைவலி (தீக்ஷ்ணாக்னி)',
+        'சீரான மற்றும் நல்ல பசி (சமாக்னி)',
+        'ஒழுங்கற்ற பசி — சில நேரம் பசிக்கும், சில நேரம் பசிக்காது (விஷமாக்னி)',
+        'மந்தமான பசி — சாப்பிட்ட பின் மந்தம் (மந்தாக்னி)',
+      ],
+      ayushKey: 'ahara_shakti',
+    },
+    {
+      id: 'koshtha',
+      section: 'ahara_shakti',
+      question: 'உங்கள் மலம் கழிக்கும் பழக்கம் (கோஷ்டம்) எவ்வாறு உள்ளது?',
+      type: 'options',
+      options: [
+        'தினமும் சீராக ஒருமுறை மலம் கழிகிறது (சம கோஷ்டம்)',
+        'அடிக்கடி மலம் கழிப்பது அல்லது தளர்வான மலம் (மிருது கோஷ்டம்)',
+        'மலச்சிக்கல் — கடினமான மலம் (க்ரூர கோஷ்டம்)',
+      ],
+      ayushKey: 'koshtha',
+    },
+    {
+      id: 'sattva_mental',
+      section: 'sattva',
+      question: 'மன அழுத்தம் வரும்போது உங்கள் மன உறுதி எவ்வாறு இருக்கும்?',
+      type: 'options',
+      options: [
+        'மிகவும் வலிமையானது — அமைதியாக சமாளிப்பேன் (பிரவர சத்துவம்)',
+        'நடுத்தரமானது (மத்யம சத்துவம்)',
+        'எளிதில் பதற்றமும் பயமும் வந்துவிடும் (அவர சத்துவம்)',
+      ],
+      ayushKey: 'sattva',
+    },
+  ],
+
+  te: [
+    {
+      id: 'prakriti_body_type',
+      section: 'prakriti',
+      question: 'మీ శరీర నిర్మాణం మరియు బరువు ఎలా ఉంది?',
+      type: 'options',
+      options: [
+        'సన్నని శరీరం, బరువు పెరగడం కష్టం (వాత ప్రకృతి)',
+        'మధ్యస్థ శరీరం, చక్కని నిష్పత్తి (పిత్త ప్రకృతి)',
+        'లావైన శరీరం, సులభంగా బరువు పెరుగుతారు (కఫ ప్రకృతి)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'prakriti_skin',
+      section: 'prakriti',
+      question: 'మీ చర్మం స్వభావం ఎలా ఉంది?',
+      type: 'options',
+      options: [
+        'పొడిబారిన, గరుకైన చర్మం (వాతం)',
+        'నూనె జిడ్డు, వెచ్చని, ఎర్రబడే చర్మం (పిత్తం)',
+        'మృదువైన, తేమగల చర్మం (కఫం)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'ahara_appetite',
+      section: 'ahara_shakti',
+      question: 'మీ ఆకలి మరియు జీర్ణశక్తి (అగ్ని) ఎలా ఉంది?',
+      type: 'options',
+      options: [
+        'తీవ్రమైన ఆకలి — సమయానికి తినకపోతే తలనొప్పి (తీక్ష్ణాగ్ని)',
+        'సహజమైన, మంచి ఆకలి (సమాగ్ని)',
+        'అనిశ్చితమైన ఆకలి — కొన్నిసార్లు ఆకలి వేస్తుంది, కొన్నిసార్లు వేయదు (విషమాగ్ని)',
+        'మందగించిన ఆకలి — తిన్న తర్వాత కడుపు బరువుగా ఉంటుంది (మందాగ్ని)',
+      ],
+      ayushKey: 'ahara_shakti',
+    },
+    {
+      id: 'koshtha',
+      section: 'ahara_shakti',
+      question: 'మీ మల విసర్జన స్వభావం (కోష్ఠం) ఎలా ఉంటుంది?',
+      type: 'options',
+      options: [
+        'రోజూ క్రమం తప్పకుండా ఒకసారి సాఫీగా అవుతుంది (సమ కోష్ఠం)',
+        'తరచుగా లేదా వదులుగా విసర్జన అవుతుంది (మృదు కోష్ఠం)',
+        'మలబద్ధకం — గట్టిగా, ఆలస్యంగా అవుతుంది (క్రూర కోష్ఠం)',
+      ],
+      ayushKey: 'koshtha',
+    },
+    {
+      id: 'sattva_mental',
+      section: 'sattva',
+      question: 'ఒత్తిడి సమయంలో మీ మానసిక ధైర్యం ఎలా ఉంటుంది?',
+      type: 'options',
+      options: [
+        'చాలా దృఢమైనది — ప్రశాంతంగా ఎదుర్కొంటాను (ప్రవర సత్త్వం)',
+        'మధ్యస్థం — కొద్ది ప్రయత్నంతో సరిచేసుకుంటాను (మధ్యమ సత్త్వం)',
+        'త్వరగా ఆందోళన చెందుతాను (అవర సత్త్వం)',
+      ],
+      ayushKey: 'sattva',
+    },
+  ],
+
+  kn: [
+    {
+      id: 'prakriti_body_type',
+      section: 'prakriti',
+      question: 'ನಿಮ್ಮ ದೇಹ ರಚನೆ ಮತ್ತು ತೂಕ ಹೇಗಿದೆ?',
+      type: 'options',
+      options: [
+        'ತೆಳ್ಳನೆಯ ದೇಹ, ತೂಕ ಹೆಚ್ಚಿಸುವುದು ಕಷ್ಟ (ವಾತ ಪ್ರಕೃತಿ)',
+        'ಮಧ್ಯಮ ದೇಹ, ಸಮತೋಲಿತ ತೂಕ (ಪಿತ್ತ ಪ್ರಕೃತಿ)',
+        'ದಪ್ಪ ದೇಹ, ಸುಲಭವಾಗಿ ತೂಕ ಹೆಚ್ಚುತ್ತದೆ (ಕಫ ಪ್ರಕೃತಿ)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'prakriti_skin',
+      section: 'prakriti',
+      question: 'ನಿಮ್ಮ ಚರ್ಮದ ಗುಣ ಹೇಗಿದೆ?',
+      type: 'options',
+      options: [
+        'ಒಣಗಿದ, ಒರಟಾದ ಚರ್ಮ (ವಾತ)',
+        'ಎಣ್ಣೆಯುಕ್ತ, ಬೆಚ್ಚಗಿನ ಚರ್ಮ (ಪಿತ್ತ)',
+        'ಮೃದುವಾದ, ದಪ್ಪ ಚರ್ಮ (ಕಫ)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'ahara_appetite',
+      section: 'ahara_shakti',
+      question: 'ನಿಮ್ಮ ಹಸಿವು ಮತ್ತು ಜೀರ್ಣಶಕ್ತಿ (ಅಗ್ನಿ) ಹೇಗಿದೆ?',
+      type: 'options',
+      options: [
+        'ತೀವ್ರ ಹಸಿವು — ಸಮಯಕ್ಕೆ ತಿನ್ನದಿದ್ದರೆ ತಲೆನೋವು (ತೀಕ್ಷ್ಣಾಗ್ನಿ)',
+        'ಸಾಮಾನ್ಯ ಮತ್ತು ಉತ್ತಮ ಹಸಿವು (ಸಮಾಗ್ನಿ)',
+        'ಅನಿಯಮಿತ ಹಸಿವು (ವಿಷಮಾಗ್ನಿ)',
+        'ಕಡಿಮೆ ಹಸಿವು — ತಿಂದ ನಂತರ ಹೊಟ್ಟೆ ಭಾರ (ಮಂದಾಗ್ನಿ)',
+      ],
+      ayushKey: 'ahara_shakti',
+    },
+    {
+      id: 'koshtha',
+      section: 'ahara_shakti',
+      question: 'ಮಲವಿಸರ್ಜನೆ ಪ್ರಕ್ರಿಯೆ (ಕೋಷ್ಠ) ಹೇಗಿದೆ?',
+      type: 'options',
+      options: [
+        'ದಿನಕ್ಕೆ ಒಮ್ಮೆ ಸರಿಯಾಗಿ ಆಗುತ್ತದೆ (ಸಮ ಕೋಷ್ಠ)',
+        'ಪದೇ ಪದೇ ಅಥವಾ ಸಡಿಲ ಮಲ (ಮೃದು ಕೋಷ್ಠ)',
+        'ಮಲಬದ್ಧತೆ — ಕಷ್ಟವಾಗುತ್ತದೆ (ಕ್ರೂರ ಕೋಷ್ಠ)',
+      ],
+      ayushKey: 'koshtha',
+    },
+    {
+      id: 'sattva_mental',
+      section: 'sattva',
+      question: 'ಒತ್ತಡದ ಸಮಯದಲ್ಲಿ ನಿಮ್ಮ ಮಾನಸಿಕ ಧೈರ್ಯ ಹೇಗಿರುತ್ತದೆ?',
+      type: 'options',
+      options: [
+        'ಬಹಳ ಧೈರ್ಯಶಾಲಿ — ಶಾಂತವಾಗಿ ನಿಭಾಯಿಸುತ್ತೇನೆ (ಪ್ರವರ ಸತ್ತ್ವ)',
+        'ಮಧ್ಯಮ ಸಾಮರ್ಥ್ಯ (ಮಧ್ಯಮ ಸತ್ತ್ವ)',
+        'ಬೇಗನೆ ಭಯ ಮತ್ತು ಆತಂಕವಾಗುತ್ತದೆ (ಅವರ ಸತ್ತ್ವ)',
+      ],
+      ayushKey: 'sattva',
+    },
+  ],
+
+  bn: [
+    {
+      id: 'prakriti_body_type',
+      section: 'prakriti',
+      question: 'আপনার শরীরের গঠন ও ওজন কেমন?',
+      type: 'options',
+      options: [
+        'পাতলা শরীর, ওজন বাড়ানো কঠিন (বাত প্রকৃতি)',
+        'মাঝারি গঠন, সুষম ওজন (পিত্ত প্রকৃতি)',
+        'ভারী শরীর, সহজেই ওজন বাড়ে (কফ প্রকৃতি)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'prakriti_skin',
+      section: 'prakriti',
+      question: 'আপনার ত্বক কেমন?',
+      type: 'options',
+      options: [
+        'শুষ্ক, খসখসে ও ঠান্ডা ত্বক (বাত)',
+        'তৈলাক্ত, গরম, লালচে হওয়ার প্রবণতা (পিত্ত)',
+        'কোমল, মসৃণ ও আর্দ্র ত্বক (কফ)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'ahara_appetite',
+      section: 'ahara_shakti',
+      question: 'আপনার ক্ষুধা এবং পরিপাক ক্ষমতা (অগ্নি) কেমন?',
+      type: 'options',
+      options: [
+        'প্রচণ্ড ক্ষুধা — সময়ে না খেলে মাথা ব্যথা (তীক্ষ্ণাগ্নি)',
+        'নিয়মিত ও ভালো ক্ষুধা (সমাগ্নি)',
+        'অনিয়মিত — কখনো ক্ষুধা পায়, কখনো পায় না (বিষমাগ্নি)',
+        'কম ক্ষুধা — খাওয়ার পর পেট ভারী লাগে (মন্দাগ্নি)',
+      ],
+      ayushKey: 'ahara_shakti',
+    },
+    {
+      id: 'koshtha',
+      section: 'ahara_shakti',
+      question: 'পেট পরিষ্কারের স্বভাব (কোষ্ঠ) কেমন?',
+      type: 'options',
+      options: [
+        'প্রতিদিন নিয়মিত একবার স্বাভাবিকভাবে হয় (সম কোষ্ঠ)',
+        'ঘন ঘন বা পাতলা মল হয় (মৃদু কোষ্ঠ)',
+        'কোষ্ঠকাঠিন্য — শক্ত মল ও কষ্ট হয় (ক্রূর কোষ্ঠ)',
+      ],
+      ayushKey: 'koshtha',
+    },
+    {
+      id: 'sattva_mental',
+      section: 'sattva',
+      question: 'মানসিক চাপের সময় আপনার ধৈর্য কেমন থাকে?',
+      type: 'options',
+      options: [
+        'খুব দৃঢ় — শান্তভাবে পরিস্থিতি সামলাই (প্রবর সত্ত্ব)',
+        'মাঝারি (মধ্যম সত্ত্ব)',
+        'সহজেই ভেঙে পড়ি বা ভয় পাই (অবর সত্ত্ব)',
+      ],
+      ayushKey: 'sattva',
+    },
+  ],
+
+  gu: [
+    {
+      id: 'prakriti_body_type',
+      section: 'prakriti',
+      question: 'તમારા શરીરનું બંધારણ અને વજન કેવું છે?',
+      type: 'options',
+      options: [
+        'પાતળું શરીર, વજન વધારવું મુશ્કેલ (વાત પ્રકૃતિ)',
+        'મધ્યમ શરીર, પ્રમાણસર વજન (પિત્ત પ્રકૃતિ)',
+        'ભારે શરીર, વજન સરળતાથી વધે છે (કફ પ્રકૃતિ)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'prakriti_skin',
+      section: 'prakriti',
+      question: 'તમારી ત્વચા કેવી છે?',
+      type: 'options',
+      options: [
+        'સૂકી, રુક્ષ અને ઠંડી ત્વચા (વાત)',
+        'તેલીય, ગરમ, લાલ થતી ત્વચા (પિત્ત)',
+        'મુલાયમ, લીસી અને જાડી ત્વચા (કફ)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'ahara_appetite',
+      section: 'ahara_shakti',
+      question: 'તમારી ભૂખ અને પાચનશક્તિ (અગ્નિ) કેવી છે?',
+      type: 'options',
+      options: [
+        'ખૂબ તીવ્ર ભૂખ — સમયે ન ખાવાથી માથાનો દુખાવો (તીક્ષ્ણાગ્નિ)',
+        'નિયમિત અને સારી ભૂખ (સમાગ્નિ)',
+        'અનિયમિત — ક્યારેક ભૂખ લાગે, ક્યારેક નહીં (વિષમાગ્નિ)',
+        'ઓછી ભૂખ — જમ્યા પછી પેટ ભારે લાગે (મંદાગ્નિ)',
+      ],
+      ayushKey: 'ahara_shakti',
+    },
+    {
+      id: 'koshtha',
+      section: 'ahara_shakti',
+      question: 'શૌચ થવાની પ્રક્રિયા (કોષ્ઠ) કેવી છે?',
+      type: 'options',
+      options: [
+        'રોજ નિયમિત એક વાર બરાબર પેટ સાફ થાય છે (સમ કોષ્ઠ)',
+        'વારંવાર શૌચ થવું કે પાતળું થવું (મૃદુ કોષ્ઠ)',
+        'કબજિયાત — કઠણ મળ અને મુશ્કેલી થાય (ક્રૂર કોષ્ઠ)',
+      ],
+      ayushKey: 'koshtha',
+    },
+    {
+      id: 'sattva_mental',
+      section: 'sattva',
+      question: 'તણાવના સમયે તમારું માનસિક ધૈર્ય કેવું રહે છે?',
+      type: 'options',
+      options: [
+        'ખૂબ મજબૂત — શાંતિથી મુશ્કેલીનો સામનો કરું છું (પ્રવર સત્ત્વ)',
+        'મધ્યમ (મધ્યમ સત્ત્વ)',
+        'તરત ગભરાઈ જાવ કે ડર લાગે (અવર સત્ત્વ)',
+      ],
+      ayushKey: 'sattva',
+    },
+  ],
+
+  en: [
+    {
+      id: 'prakriti_body_type',
+      section: 'prakriti',
+      question: 'What best describes your general body frame and build?',
+      type: 'options',
+      options: [
+        'Thin, light frame — difficult to gain weight (Vata)',
+        'Medium frame, well-proportioned — moderate weight (Pitta)',
+        'Heavy, large frame — tendency to gain weight (Kapha)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'prakriti_skin',
+      section: 'prakriti',
+      question: 'How would you describe your skin texture?',
+      type: 'options',
+      options: [
+        'Dry, rough, cool to touch (Vata)',
+        'Warm, oily, soft, prone to rashes (Pitta)',
+        'Thick, moist, smooth, pale (Kapha)',
+      ],
+      ayushKey: 'prakriti',
+    },
+    {
+      id: 'vikriti_current',
+      section: 'vikriti',
+      question: 'What is your dominant current complaint related to Ayurvedic imbalance?',
+      type: 'multi',
+      options: [
+        'Dryness, constipation, anxiety, gas/bloating (Vata excess)',
+        'Acidity, inflammation, rashes, anger, loose stools (Pitta excess)',
+        'Heaviness, congestion, mucus, lethargy, swelling (Kapha excess)',
+        'None clearly identified',
+      ],
+      ayushKey: 'vikriti',
+    },
+    {
+      id: 'ahara_appetite',
+      section: 'ahara_shakti',
+      question: 'How is your appetite and digestive capacity (Agni)?',
+      type: 'options',
+      options: [
+        'Very strong — can digest heavy meals, always hungry (Tikshna Agni)',
+        'Good and regular appetite (Sama Agni)',
+        'Irregular — sometimes hungry, sometimes not (Vishama Agni)',
+        'Weak — feel heavy after meals, low appetite (Manda Agni)',
+      ],
+      ayushKey: 'ahara_shakti',
+    },
+    {
+      id: 'koshtha',
+      section: 'ahara_shakti',
+      question: 'What is your usual bowel pattern (Koshtha)?',
+      type: 'options',
+      options: [
+        'Regular once daily — normal consistency (Sama Koshtha)',
+        'Tendency to loose stools / frequent (Mridu Koshtha)',
+        'Constipation — hard, infrequent stools (Krura Koshtha)',
+      ],
+      ayushKey: 'koshtha',
+    },
+    {
+      id: 'sattva_mental',
+      section: 'sattva',
+      question: 'How do you handle mental stress and emotional challenges?',
+      type: 'options',
+      options: [
+        'Very strong — handle stress calmly without breaking down (Pravara Sattva)',
+        'Moderate — manage with some effort (Madhyama Sattva)',
+        'Easily affected — stress, pain, and worry overwhelm me (Avara Sattva)',
+      ],
+      ayushKey: 'sattva',
+    },
+    {
+      id: 'vyayama_capacity',
+      section: 'vyayama_shakti',
+      question: 'What is your physical exercise capacity (Bala)?',
+      type: 'options',
+      options: [
+        'High endurance — can exercise vigorously without fatigue (Pravara)',
+        'Moderate — regular moderate activity without difficulty (Madhyama)',
+        'Low — get fatigued quickly, cannot tolerate exertion (Avara)',
+      ],
+      ayushKey: 'vyayama_shakti',
+    },
+  ],
+};
+
+export const getLocalizedAyushQuestions = (langCode) => {
+  return AYUSH_QUESTIONS_BY_LANG[langCode] || AYUSH_QUESTIONS_BY_LANG.en;
+};
+
+export const getLocalizedDashavidhaSections = (langCode) => {
+  return DASHAVIDHA_SECTIONS_BY_LANG[langCode] || DASHAVIDHA_SECTIONS_BY_LANG.en;
+};
+
+// Default fallback exports for backwards compatibility
+export const DASHAVIDHA_SECTIONS = DASHAVIDHA_SECTIONS_BY_LANG.en;
+export const AYUSH_QUESTIONS = AYUSH_QUESTIONS_BY_LANG.en;
